@@ -68,21 +68,22 @@ void BinaryTree::remove(int a_nValue)
 			remove(int value)
 		find the value in the tree, obtaining a pointer to the node and its parent
 		If the current node has a right branch, then
-		find the minimum value in the right branch by iterating down the left branch of the
-		current node’s right child until there are no more left branch nodes
-		copy the value from this minimum node to the current node
-		find the minimum node’s parent node (the parent of the node you are deleting)
-		if you are deleting the parent’s left node
-		set this left child of the parent to the right child of the minimum
-		node
-		if you are deleting the parent’s right node
-		set the right child of the parent to the minimum node’s right child
+			find the minimum value in the right branch by iterating down the left branch of the
+				current node’s right child until there are no more left branch nodes
+			copy the value from this minimum node to the current node
+			find the minimum node’s parent node (the parent of the node you are deleting)
+				if you are deleting the parent’s left node
+					set this left child of the parent to the right child of the minimum
+					node
+				if you are deleting the parent’s right node
+					set the right child of the parent to the minimum node’s right child
+
 		If the current node has no right branch
-		if we are deleting the parent’s left child, set the left child of the parent to the left
-		child of the current node
-		If we are deleting the parent’s right child, set the right child of the parent to the left
-		child of the current node
-		If we are deleting the root, the root becomes the left child of the current node
+			if we are deleting the parent’s left child, set the left child of the parent to the left
+			child of the current node
+			If we are deleting the parent’s right child, set the right child of the parent to the left
+			child of the current node
+			If we are deleting the root, the root becomes the left child of the current node
 
 	*/
 	TreeNode * current;
@@ -93,25 +94,85 @@ void BinaryTree::remove(int a_nValue)
 	ppOutNode = &current;
 	TreeNode ** ppOutParent;
 	ppOutNode = &parent;
+
 	
 	findNode( a_nValue, ppOutNode, ppOutParent);
 
 	if (findNode(a_nValue, ppOutNode, ppOutParent) == true)
 	{
+		TreeNode *minimum = *ppOutNode;
+		TreeNode *minimumParent = *ppOutParent;
+		TreeNode *temp;
+		
 		if (current->hasRight())
 		{
-			current = current->getRight();
-			if (current->hasLeft())
+			minimumParent = minimum;
+			minimum = minimum->getRight();
+			if (minimum->hasLeft())
 			{
-				current = current->getLeft();
-				while (current->hasLeft())
+				minimumParent = minimum;
+				minimum = minimum->getLeft();
+				while (minimum->hasLeft())
 				{
-					current = current->getLeft();
+					minimumParent = minimum;
+					minimum = minimum->getLeft();
 
 					//left off here
 				}
 			}
+
+			current ->setData(minimum->getData());
+			
+
+			if (minimumParent->getLeft() == minimum)
+			{
+				if (minimum->hasRight)
+				{
+					minimumParent->setLeft(minimum->getRight());
+					delete minimum;
+				}
+			}
+			else if (minimumParent->getRight() == minimum)
+			{
+				if (minimum->hasRight)
+				{
+					minimumParent->setRight(minimum->getRight());
+					delete minimum;
+				}
+			}
 		}
+
+		else
+		{
+			if (parent->getLeft() == current)
+			{
+				if (current->hasLeft())
+				{
+					parent->setLeft(current->getLeft());
+					delete current;
+				}
+			}
+
+			if (parent->getRight() == current)
+			{
+				if (current->hasLeft())
+				{
+					parent->setRight(current->getLeft());
+					delete current;
+				}
+			}
+
+			if (m_pRoot == current)
+			{
+				if (current->hasLeft())
+				{
+					m_pRoot = (current->getLeft);
+					delete m_pRoot;
+				}
+			}
+		}
+
+	
 	}
 
 	if (current->hasLeft() == false && current->hasRight() == false)
@@ -142,6 +203,7 @@ void BinaryTree::remove(int a_nValue)
 		parent->setLeft(current->getLeft);
 		delete current;
 	}
+
 }
 
 void BinaryTree::draw(aie::Renderer2D* renderer, TreeNode* selected)
