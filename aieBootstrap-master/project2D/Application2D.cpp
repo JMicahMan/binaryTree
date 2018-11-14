@@ -13,6 +13,7 @@ Application2D::~Application2D() {
 
 bool Application2D::startup() {
 	
+	
 	m_2dRenderer = new aie::Renderer2D();
 
 	m_texture = new aie::Texture("./textures/numbered_grid.tga");

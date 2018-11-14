@@ -1,4 +1,7 @@
 #include "binaryTree.h"
+#include "binaryApp.h"
+
+
 
 
 BinaryTree::BinaryTree()
@@ -102,7 +105,7 @@ void BinaryTree::remove(int a_nValue)
 	{
 		TreeNode *minimum = *ppOutNode;
 		TreeNode *minimumParent = *ppOutParent;
-		TreeNode *temp;
+//		TreeNode *temp;
 		
 		if (current->hasRight())
 		{
@@ -126,7 +129,7 @@ void BinaryTree::remove(int a_nValue)
 
 			if (minimumParent->getLeft() == minimum)
 			{
-				if (minimum->hasRight)
+				if (minimum->hasRight())
 				{
 					minimumParent->setLeft(minimum->getRight());
 					delete minimum;
@@ -134,7 +137,7 @@ void BinaryTree::remove(int a_nValue)
 			}
 			else if (minimumParent->getRight() == minimum)
 			{
-				if (minimum->hasRight)
+				if (minimum->hasRight())
 				{
 					minimumParent->setRight(minimum->getRight());
 					delete minimum;
@@ -166,7 +169,7 @@ void BinaryTree::remove(int a_nValue)
 			{
 				if (current->hasLeft())
 				{
-					m_pRoot = (current->getLeft);
+					m_pRoot = (current->getLeft());
 					delete m_pRoot;
 				}
 			}
@@ -187,20 +190,20 @@ void BinaryTree::remove(int a_nValue)
 		{
 			current = current->getLeft();
 		}
-		TreeNode* curntptr = *ppCurrent;
+		TreeNode* curntptr = *ppOutNode;
 		
 		curntptr->setData(current->getData());
 	}
 
 	if (current->hasRight() == true)
 	{
-		parent->setRight(current->getRight);
+		parent->setRight(current->getRight());
 		delete current;
 	}
 
 	if (current->hasLeft() == true)
 	{
-		parent->setLeft(current->getLeft);
+		parent->setLeft(current->getLeft());
 		delete current;
 	}
 
