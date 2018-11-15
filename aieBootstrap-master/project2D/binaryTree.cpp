@@ -1,4 +1,4 @@
-#include "binaryTree.h"
+
 #include "binaryApp.h"
 
 
@@ -7,6 +7,10 @@
 BinaryTree::BinaryTree()
 {
 	m_pRoot = nullptr;
+}
+
+BinaryTree::~BinaryTree()
+{
 }
 
 bool BinaryTree::isEmpty() const
@@ -18,7 +22,7 @@ bool BinaryTree::isEmpty() const
 	return false;
 }
 
-void BinaryTree::insert(int a_nValue)
+void BinaryTree::insert(int a_nValue) //works
 {
 	TreeNode* temp;
 
@@ -37,13 +41,13 @@ void BinaryTree::insert(int a_nValue)
 			if (current->getData() > a_nValue)
 			{
 				parent = current;
-				current = current->getRight();
+				current = current->getLeft();
 				
 			}
 			else if (current->getData() < a_nValue)
 			{
 				parent = current;
-				current = current->getLeft();
+				current = current->getRight();
 			}
 			else
 			{
@@ -96,10 +100,10 @@ void BinaryTree::remove(int a_nValue)
 	TreeNode ** ppOutNode;
 	ppOutNode = &current;
 	TreeNode ** ppOutParent;
-	ppOutNode = &parent;
+	ppOutParent = &parent;
 
 	
-	findNode( a_nValue, ppOutNode, ppOutParent);
+	findNode( a_nValue, ppOutNode, ppOutParent); //Works needs to be broken
 
 	if (findNode(a_nValue, ppOutNode, ppOutParent) == true)
 	{
@@ -113,8 +117,6 @@ void BinaryTree::remove(int a_nValue)
 			minimum = minimum->getRight();
 			if (minimum->hasLeft())
 			{
-				minimumParent = minimum;
-				minimum = minimum->getLeft();
 				while (minimum->hasLeft())
 				{
 					minimumParent = minimum;
@@ -122,10 +124,8 @@ void BinaryTree::remove(int a_nValue)
 
 					//left off here
 				}
+				current->setData(minimum->getData());
 			}
-
-			current ->setData(minimum->getData());
-			
 
 			if (minimumParent->getLeft() == minimum)
 			{
@@ -133,6 +133,7 @@ void BinaryTree::remove(int a_nValue)
 				{
 					minimumParent->setLeft(minimum->getRight());
 					delete minimum;
+					return;
 				}
 			}
 			else if (minimumParent->getRight() == minimum)
@@ -141,6 +142,7 @@ void BinaryTree::remove(int a_nValue)
 				{
 					minimumParent->setRight(minimum->getRight());
 					delete minimum;
+					return;
 				}
 			}
 		}
@@ -153,6 +155,7 @@ void BinaryTree::remove(int a_nValue)
 				{
 					parent->setLeft(current->getLeft());
 					delete current;
+					return;
 				}
 			}
 
@@ -162,6 +165,7 @@ void BinaryTree::remove(int a_nValue)
 				{
 					parent->setRight(current->getLeft());
 					delete current;
+					return;
 				}
 			}
 
@@ -170,7 +174,8 @@ void BinaryTree::remove(int a_nValue)
 				if (current->hasLeft())
 				{
 					m_pRoot = (current->getLeft());
-					delete m_pRoot;
+					delete current;
+					return;
 				}
 			}
 		}
@@ -181,6 +186,8 @@ void BinaryTree::remove(int a_nValue)
 	if (current->hasLeft() == false && current->hasRight() == false)
 	{
 		delete current;
+		current = nullptr;
+		return;
 	}
 
 	if (current->hasRight() == true)
@@ -198,20 +205,43 @@ void BinaryTree::remove(int a_nValue)
 	if (current->hasRight() == true)
 	{
 		parent->setRight(current->getRight());
-		delete current;
+		delete current; 
+		return;
 	}
 
 	if (current->hasLeft() == true)
 	{
 		parent->setLeft(current->getLeft());
 		delete current;
+		return;
 	}
 
 }
 
-void BinaryTree::draw(aie::Renderer2D* renderer, TreeNode* selected)
+TreeNode * BinaryTree::find(int a_nValue)
 {
-	draw(renderer, m_pRoot, 640, 680, 640, selected);
+	TreeNode *current = m_pRoot;
+	while (current->hasLeft() || current->hasRight())
+	{
+
+		if (current->getData() == a_nValue)
+		{
+			return current;
+		}
+		else if (current->getData() > a_nValue)
+		{
+			current = current->getLeft();
+		}
+		else if (current->getData() < a_nValue)
+		{
+			current = current->getRight();
+		}
+	}
+}
+
+void BinaryTree::draw(aie::Renderer2D* renderer, aie::Font* g_systemFont, TreeNode* selected)
+{
+	draw(renderer, m_pRoot, 640, 680, 640,g_systemFont, selected);
 }
 
 
@@ -276,18 +306,26 @@ bool BinaryTree::findNode(int a_nSearchValue, TreeNode ** ppOutNode, TreeNode **
 
 
 void BinaryTree::draw(aie::Renderer2D* renderer, TreeNode* pNode, int x, int y,
-	int horizontalSpacing, TreeNode* selected)
+	int horizontalSpacing, aie::Font* g_systemFont, TreeNode* selected)
 {
 	horizontalSpacing /= 2;
 
 	if (pNode) {
-		if (pNode->hasLeft()) {
+		if (pNode->hasLeft())
+		{
 			renderer->setRenderColour(1, 0, 0);
-			renderer->drawLine(x, y, x + horizontalSpacing, y - 80);
+			renderer->drawLine(x, y, x - horizontalSpacing, y - 80);
 			draw(renderer, pNode->getLeft(), x - horizontalSpacing,
-				y - 80, horizontalSpacing, selected);
+				y - 80, horizontalSpacing,g_systemFont, selected);
 		}
 
+		if (pNode->hasRight())
+		{
+			renderer->setRenderColour(1, 0, 0);
+			renderer->drawLine(x, y, x + horizontalSpacing, y - 80);
+			draw(renderer, pNode->getRight(), x + horizontalSpacing,
+				y - 80, horizontalSpacing, g_systemFont, selected);
+		}
 		pNode->draw(renderer, x, y, (selected == pNode));
 	}
 }

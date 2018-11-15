@@ -1,9 +1,12 @@
 #include "binaryApp.h"
+#include "Input.h"
+#include "imgui.h"
 
 
 
 
-aie:Font * g_systemFont = nullptr;
+
+aie::Font* g_systemFont = nullptr;
 
 bool binaryApp::startup()
 {
@@ -12,12 +15,17 @@ bool binaryApp::startup()
 	return true;
 }
 
+void binaryApp::shutdown()
+{	
+	delete m_2dRenderer;
+}
+
 void binaryApp::update(float deltaTime)
 {
 	aie::Input* input = aie::Input::getInstance();
 
 	static int value = 0;
-	ImGui::Input("Value, &value");
+	ImGui::InputInt("Value", &value);
 
 	if (ImGui::Button("Insert", ImVec2(50, 0)))
 	{
@@ -42,7 +50,7 @@ void binaryApp::draw()
 
 	m_2dRenderer->begin();
 
-	m_binaryTree.draw(m_2dRenderer, m_selectedNode);
+	m_binaryTree.draw(m_2dRenderer,g_systemFont, m_selectedNode);
 
 	m_2dRenderer->drawText(g_systemFont, "press Esc to quit", 0, 0);
 

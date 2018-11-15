@@ -165,10 +165,12 @@
     <ClCompile Include="Application2D.cpp" />
     <ClCompile Include="binaryTree.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="binaryApp.cpp" />
     <ClCompile Include="treeNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application2D.h" />
+    <ClInclude Include="binaryApp.h" />
     <ClInclude Include="binaryTree.h" />
     <ClInclude Include="treeNode.h" />
   </ItemGroup>
