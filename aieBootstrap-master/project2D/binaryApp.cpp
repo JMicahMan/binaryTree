@@ -33,7 +33,11 @@ void binaryApp::update(float deltaTime)
 		m_selectedNode = m_binaryTree.find(value);
 	}
 
-	if (ImGui::Button("Remove", ImVec2(50, 0)))	{		m_binaryTree.remove(value);	}
+	if (ImGui::Button("Remove", ImVec2(50, 0)))
+	{
+		m_binaryTree.remove(value);
+	}
+
 	if (ImGui::Button("Find", ImVec2(50, 0)))
 	{
 		m_selectedNode = m_binaryTree.find(value);
