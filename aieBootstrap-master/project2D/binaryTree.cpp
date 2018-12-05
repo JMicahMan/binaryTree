@@ -219,9 +219,6 @@ bool BinaryTree::findNode(int a_nSearchValue, TreeNode ** ppOutNode, TreeNode **
 
 
 
-
-
-
 void BinaryTree::draw(aie::Renderer2D* renderer, TreeNode* pNode, int x, int y,
 	int horizontalSpacing, aie::Font* g_systemFont, TreeNode* selected)
 {
@@ -243,6 +240,6 @@ void BinaryTree::draw(aie::Renderer2D* renderer, TreeNode* pNode, int x, int y,
 			draw(renderer, pNode->getRight(), x + horizontalSpacing,
 				y - 80, horizontalSpacing, g_systemFont, selected);
 		}
-		pNode->draw(renderer, x, y, (selected == pNode));
+		pNode->draw(renderer, x, y, g_systemFont,(selected == pNode));
 	}
 }
