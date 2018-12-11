@@ -200,6 +200,10 @@ bool BinaryTree::findNode(int a_nSearchValue, TreeNode ** ppOutNode, TreeNode **
 				*ppOutParent = (*ppOutNode);
 				*ppOutNode = (*ppOutNode)->getLeft();
 			}
+			else
+			{
+				return false;
+			}
 		}
 
 		else if (a_nSearchValue >(*ppOutNode)->getData()) // checks to see if tge node is less than what we're looking for and sends us down the right branch if true
@@ -211,6 +215,7 @@ bool BinaryTree::findNode(int a_nSearchValue, TreeNode ** ppOutNode, TreeNode **
 			}
 
 		}
+
 
 	}
 	return false;
